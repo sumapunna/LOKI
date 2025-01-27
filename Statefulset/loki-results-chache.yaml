@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: loki-results-cache
+  namespace: loki
+  uid: 47bfe592-ed02-419d-8dbb-4ce25479f3ea
+  resourceVersion: '1960'
+  generation: 1
+  creationTimestamp: '2025-01-27T16:34:02Z'
+  labels:
+    app.kubernetes.io/component: memcached-results-cache
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/version: 3.3.2
+    helm.sh/chart: loki-6.25.0
+    name: memcached-results-cache
+  annotations:
+    meta.helm.sh/release-name: loki
+    meta.helm.sh/release-namespace: loki
+  selfLink: /apis/apps/v1/namespaces/loki/statefulsets/loki-results-cache
+status:
+  observedGeneration: 1
+  replicas: 1
+  readyReplicas: 1
+  currentReplicas: 1
+  updatedReplicas: 1
+  currentRevision: loki-results-cache-6644f695d6
+  updateRevision: loki-results-cache-6644f695d6
+  collisionCount: 0
+  availableReplicas: 1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: memcached-results-cache
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/name: loki
+      name: memcached-results-cache
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/component: memcached-results-cache
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/name: loki
+        name: memcached-results-cache
+    spec:
+      containers:
+        - name: memcached
+          image: memcached:1.6.34-alpine
+          args:
+            - '-m 1024'
+            - '--extended=modern,track_sizes'
+            - '-I 5m'
+            - '-c 16384'
+            - '-v'
+            - '-u 11211'
+          ports:
+            - name: client
+              containerPort: 11211
+              protocol: TCP
+          resources:
+            limits:
+              memory: 1229Mi
+            requests:
+              cpu: 500m
+              memory: 1229Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+        - name: exporter
+          image: prom/memcached-exporter:v0.15.0
+          args:
+            - '--memcached.address=localhost:11211'
+            - '--web.listen-address=0.0.0.0:9150'
+          ports:
+            - name: http-metrics
+              containerPort: 9150
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 60
+      dnsPolicy: ClusterFirst
+      serviceAccountName: loki
+      serviceAccount: loki
+      securityContext:
+        runAsUser: 11211
+        runAsGroup: 11211
+        runAsNonRoot: true
+        fsGroup: 11211
+      affinity: {}
+      schedulerName: default-scheduler
+  serviceName: loki-results-cache
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 10

@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-ingester-zone-b-headless
+  namespace: loki
+  uid: c57f4c31-869b-4d59-852a-4d69e8e3e668
+  resourceVersion: '1317'
+  creationTimestamp: '2025-01-27T16:34:02Z'
+  labels:
+    app.kubernetes.io/component: ingester
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/version: 3.3.2
+    helm.sh/chart: loki-6.25.0
+  annotations:
+    meta.helm.sh/release-name: loki
+    meta.helm.sh/release-namespace: loki
+  selfLink: /api/v1/namespaces/loki/services/loki-ingester-zone-b-headless
+status:
+  loadBalancer: {}
+spec:
+  ports:
+    - name: http-metrics
+      protocol: TCP
+      port: 3100
+      targetPort: http-metrics
+    - name: grpc
+      protocol: TCP
+      port: 9095
+      targetPort: grpc
+  selector:
+    app.kubernetes.io/component: ingester
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/name: loki
+    name: ingester-zone-b
+    rollout-group: ingester
+  clusterIP: None
+  clusterIPs:
+    - None
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  internalTrafficPolicy: Cluster

@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-index-gateway
+  namespace: loki
+  uid: 2954fba9-3b2e-4bae-be8c-0e0cb29b10b6
+  resourceVersion: '1376'
+  creationTimestamp: '2025-01-27T16:34:02Z'
+  labels:
+    app.kubernetes.io/component: index-gateway
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/version: 3.3.2
+    helm.sh/chart: loki-6.25.0
+  annotations:
+    meta.helm.sh/release-name: loki
+    meta.helm.sh/release-namespace: loki
+  selfLink: /api/v1/namespaces/loki/services/loki-index-gateway
+status:
+  loadBalancer: {}
+spec:
+  ports:
+    - name: http-metrics
+      protocol: TCP
+      port: 3100
+      targetPort: http-metrics
+    - name: grpc
+      protocol: TCP
+      port: 9095
+      targetPort: grpc
+  selector:
+    app.kubernetes.io/component: index-gateway
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/name: loki
+  clusterIP: 10.96.157.168
+  clusterIPs:
+    - 10.96.157.168
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  internalTrafficPolicy: Cluster

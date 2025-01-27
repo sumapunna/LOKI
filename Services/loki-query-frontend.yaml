@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-query-frontend
+  namespace: loki
+  uid: d04334e5-3bbe-41ce-95a6-fbe38d48e2ca
+  resourceVersion: '1338'
+  creationTimestamp: '2025-01-27T16:34:02Z'
+  labels:
+    app.kubernetes.io/component: query-frontend
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/version: 3.3.2
+    helm.sh/chart: loki-6.25.0
+  annotations:
+    meta.helm.sh/release-name: loki
+    meta.helm.sh/release-namespace: loki
+  selfLink: /api/v1/namespaces/loki/services/loki-query-frontend
+status:
+  loadBalancer: {}
+spec:
+  ports:
+    - name: http-metrics
+      protocol: TCP
+      port: 3100
+      targetPort: http-metrics
+    - name: grpc
+      protocol: TCP
+      port: 9095
+      targetPort: grpc
+    - name: grpclb
+      protocol: TCP
+      port: 9096
+      targetPort: grpc
+  selector:
+    app.kubernetes.io/component: query-frontend
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/name: loki
+  clusterIP: 10.96.107.176
+  clusterIPs:
+    - 10.96.107.176
+  type: ClusterIP
+  sessionAffinity: None
+  publishNotReadyAddresses: true
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  internalTrafficPolicy: Cluster

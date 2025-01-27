@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-minio-svc
+  namespace: loki
+  uid: b41de58e-0cef-40d6-9172-83dd55ed0cbe
+  resourceVersion: '1308'
+  creationTimestamp: '2025-01-27T16:34:02Z'
+  labels:
+    app: minio
+    app.kubernetes.io/managed-by: Helm
+    chart: minio-5.3.0
+    heritage: Helm
+    release: loki
+  annotations:
+    meta.helm.sh/release-name: loki
+    meta.helm.sh/release-namespace: loki
+  selfLink: /api/v1/namespaces/loki/services/loki-minio-svc
+status:
+  loadBalancer: {}
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
+  selector:
+    app: minio
+    release: loki
+  clusterIP: None
+  clusterIPs:
+    - None
+  type: ClusterIP
+  sessionAffinity: None
+  publishNotReadyAddresses: true
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  internalTrafficPolicy: Cluster

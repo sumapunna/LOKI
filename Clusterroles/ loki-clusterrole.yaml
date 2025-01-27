@@ -1,0 +1,27 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: loki-clusterrole
+  uid: 55044edf-2c30-46bd-9e92-e58da6183007
+  resourceVersion: '1298'
+  creationTimestamp: '2025-01-27T16:34:02Z'
+  labels:
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/version: 3.3.2
+    helm.sh/chart: loki-6.25.0
+  annotations:
+    meta.helm.sh/release-name: loki
+    meta.helm.sh/release-namespace: loki
+  selfLink: /apis/rbac.authorization.k8s.io/v1/clusterroles/loki-clusterrole
+rules:
+  - verbs:
+      - get
+      - watch
+      - list
+    apiGroups:
+      - ''
+    resources:
+      - configmaps
+      - secrets

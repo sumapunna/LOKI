@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-root-ca.crt
+  namespace: loki
+  uid: ba4a6f94-8702-4ed7-9844-50438acaeb53
+  resourceVersion: '1048'
+  creationTimestamp: '2025-01-27T16:32:10Z'
+  annotations:
+    kubernetes.io/description: >-
+      Contains a CA bundle that can be used to verify the kube-apiserver when
+      using internal endpoints such as the internal service IP or
+      kubernetes.default.svc. No other usage is guaranteed across distributions
+      of Kubernetes clusters.
+  selfLink: /api/v1/namespaces/loki/configmaps/kube-root-ca.crt
+data:
+  ca.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIC/jCCAeagAwIBAgIBADANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwprdWJl
+    cm5ldGVzMB4XDTI1MDEyNzE2MjgyNloXDTM1MDEyNTE2MjgyNlowFTETMBEGA1UE
+    AxMKa3ViZXJuZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKTg
+    1thbpgo40Td4DiaS/gAoV+PD5VX8kE+KUm/6azLnrdXoysxIWU6pS+zEqlo7od1H
+    lKEVPTqmNeLCCJ4z3kjQjsAlp+apGsDp7Zh9Xng/JxvjL9UcMZLaoTw5HJlQiRSp
+    nPikUr85O337xTHp+S9mIf2rV+E7tLrQjfRfi/H1JjvpgyVmFDPQKw4biWLHbxe6
+    T3OzQ8oi54eefcTergbVkZA9gxjk2NzR727Kdsk1Luo5T4Kad/WhzxdZs2pTDJcz
+    JUYrbmHDEp1Wqxzz1fh11LD5ogFUP41VKmR3Nk+WkCLtmQlvzKyeRelBaZye8L7Y
+    TTV2o2hnLBaRW6ASd9MCAwEAAaNZMFcwDgYDVR0PAQH/BAQDAgKkMA8GA1UdEwEB
+    /wQFMAMBAf8wHQYDVR0OBBYEFN+Z4e/k0vl4f5X6AoLkfmWGcE+yMBUGA1UdEQQO
+    MAyCCmt1YmVybmV0ZXMwDQYJKoZIhvcNAQELBQADggEBAGo6/jFrscCYxf1Q7Gl5
+    28VBJj2AWpBUXlTy7JrIS84zKz7CCzZzyKCg28Jj1ko0VmZGjNiCerx5tnGgQM+P
+    1lJiFoMjItoGJgcWgWUTIGkgNmc68FEGKlTTIMAQfZEldEzkuGsMKsWVdc8i1lRN
+    nn6iWdrRtRRmb3QBUwtz0PYQJ9LDiOu8f5F2eM2euQTblp77gbThqUbOtDYxzXST
+    2/17JObTlu9pGUHdeHdR3rhLG+0gW9w0+Z9FOn7E8SwoM+RcxeJ4MbCDsha0FyP1
+    +BJb4b1OFv8fIM0cq79+hfDqtYVLcjdLQXUzrWgfrZCjXByGnPMigiHScb/jgUxX
+    4+8=
+    -----END CERTIFICATE-----

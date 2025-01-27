@@ -1,0 +1,136 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loki-query-frontend
+  namespace: loki
+  uid: a9d3c2a8-5bfb-4d2e-806f-cfc2c55a64c5
+  resourceVersion: '2095'
+  generation: 1
+  creationTimestamp: '2025-01-27T16:34:02Z'
+  labels:
+    app.kubernetes.io/component: query-frontend
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/version: 3.3.2
+    helm.sh/chart: loki-6.25.0
+  annotations:
+    deployment.kubernetes.io/revision: '1'
+    meta.helm.sh/release-name: loki
+    meta.helm.sh/release-namespace: loki
+  selfLink: /apis/apps/v1/namespaces/loki/deployments/loki-query-frontend
+status:
+  observedGeneration: 1
+  replicas: 2
+  updatedReplicas: 2
+  readyReplicas: 2
+  availableReplicas: 2
+  conditions:
+    - type: Available
+      status: 'True'
+      lastUpdateTime: '2025-01-27T16:34:52Z'
+      lastTransitionTime: '2025-01-27T16:34:52Z'
+      reason: MinimumReplicasAvailable
+      message: Deployment has minimum availability.
+    - type: Progressing
+      status: 'True'
+      lastUpdateTime: '2025-01-27T16:35:02Z'
+      lastTransitionTime: '2025-01-27T16:34:02Z'
+      reason: NewReplicaSetAvailable
+      message: ReplicaSet "loki-query-frontend-77c9469b54" has successfully progressed.
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: query-frontend
+      app.kubernetes.io/instance: loki
+      app.kubernetes.io/name: loki
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/component: query-frontend
+        app.kubernetes.io/instance: loki
+        app.kubernetes.io/name: loki
+        app.kubernetes.io/part-of: memberlist
+      annotations:
+        checksum/config: 9f34d63ec8a6f6769a40c26d55ed1e62ad17f17e904d782f49d736ec176060f0
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: loki
+            items:
+              - key: config.yaml
+                path: config.yaml
+            defaultMode: 420
+        - name: runtime-config
+          configMap:
+            name: loki-runtime
+            defaultMode: 420
+      containers:
+        - name: query-frontend
+          image: docker.io/grafana/loki:3.3.2
+          args:
+            - '-config.file=/etc/loki/config/config.yaml'
+            - '-target=query-frontend'
+          ports:
+            - name: http-metrics
+              containerPort: 3100
+              protocol: TCP
+            - name: grpc
+              containerPort: 9095
+              protocol: TCP
+            - name: http-memberlist
+              containerPort: 7946
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/loki/config
+            - name: runtime-config
+              mountPath: /etc/loki/runtime-config
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http-metrics
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      serviceAccountName: loki
+      serviceAccount: loki
+      securityContext:
+        runAsUser: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        fsGroup: 10001
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: query-frontend
+              topologyKey: kubernetes.io/hostname
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 0
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

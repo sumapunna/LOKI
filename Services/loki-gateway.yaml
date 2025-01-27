@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-gateway
+  namespace: loki
+  uid: 639555c3-8256-4dc2-acbb-ebe12facba17
+  resourceVersion: '1324'
+  creationTimestamp: '2025-01-27T16:34:02Z'
+  labels:
+    app.kubernetes.io/component: gateway
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/version: 3.3.2
+    helm.sh/chart: loki-6.25.0
+  annotations:
+    meta.helm.sh/release-name: loki
+    meta.helm.sh/release-namespace: loki
+  selfLink: /api/v1/namespaces/loki/services/loki-gateway
+status:
+  loadBalancer: {}
+spec:
+  ports:
+    - name: http-metrics
+      protocol: TCP
+      port: 80
+      targetPort: http-metrics
+      nodePort: 30924
+  selector:
+    app.kubernetes.io/component: gateway
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/name: loki
+  clusterIP: 10.96.138.149
+  clusterIPs:
+    - 10.96.138.149
+  type: LoadBalancer
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  allocateLoadBalancerNodePorts: true
+  internalTrafficPolicy: Cluster

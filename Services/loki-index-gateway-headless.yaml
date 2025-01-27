@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-index-gateway-headless
+  namespace: loki
+  uid: 564d0890-310f-4b04-9151-09cde1fa51e0
+  resourceVersion: '1318'
+  creationTimestamp: '2025-01-27T16:34:02Z'
+  labels:
+    app.kubernetes.io/component: index-gateway
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: loki
+    prometheus.io/service-monitor: 'false'
+  annotations:
+    meta.helm.sh/release-name: loki
+    meta.helm.sh/release-namespace: loki
+  selfLink: /api/v1/namespaces/loki/services/loki-index-gateway-headless
+status:
+  loadBalancer: {}
+spec:
+  ports:
+    - name: http-metrics
+      protocol: TCP
+      port: 3100
+      targetPort: http-metrics
+    - name: grpc
+      protocol: TCP
+      port: 9095
+      targetPort: grpc
+  selector:
+    app.kubernetes.io/component: index-gateway
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/name: loki
+  clusterIP: None
+  clusterIPs:
+    - None
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  internalTrafficPolicy: Cluster
